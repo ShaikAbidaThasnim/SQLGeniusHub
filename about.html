@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>SQLGeniusHub : About Us</title>
+    <title>SQLGeniushub : About Us</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,54 +31,59 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-     <script type="module">
-  // Reuse Firebase App and Firestore
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDOR-yo3uvPqm3uAhzSzmIZw7vC1W4fgCo",
-    authDomain: "sqlgeniushub.firebaseapp.com",
-    projectId: "sqlgeniushub",
-    storageBucket: "sqlgeniushub.firebasestorage.app",
-    messagingSenderId: "351592358521",
-    appId: "1:351592358521:web:fde92aac10be5c70206aa8",
-    measurementId: "G-JKGMYWJB8V"
-  };
+    <!-- Firebase SDK (Add this) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+      // Your Firebase config - replace with your actual config
+      const firebaseConfig = {
+        apiKey: "AIzaSyDwbNPm65zz_kYkJ4wZrYMqkLA_YnhX6JA",
+        authDomain: "sqlgeniushub-authentication.firebaseapp.com",
+        projectId: "sqlgeniushub-authentication",
+        storageBucket: "sqlgeniushub-authentication.firebasestorage.app",
+        messagingSenderId: "1064467414896",
+        appId: "1:1064467414896:web:d940e4c773ade8ef3a99b5",
+        measurementId: "G-C6JEPB77H8"
+      };
 
-  const loggedInEmail = localStorage.getItem("userEmail");
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-  if (loggedInEmail) {
-    const usersCollection = collection(db, "users");
-    const snapshot = await getDocs(usersCollection);
-    let userFound = false;
+      window.checkLogin = async function () {
+        // Assuming you store logged-in user's email in localStorage on login
+        const userEmail = localStorage.getItem("loggedInUserEmail");
 
-    snapshot.forEach((doc) => {
-      const user = doc.data();
-      if (user.email === loggedInEmail) {
-        userFound = true;
-        document.getElementById("nav-login").style.display = "none";
-        document.getElementById("nav-user").style.display = "block";
-        document.getElementById("user-name").innerText = user.name || "User";
-      }
-    });
+        if (userEmail) {
+          // Fetch user document from Firestore (assuming collection 'users' with doc id = email)
+          const userDocRef = doc(db, "users", userEmail);
+          const userDocSnap = await getDoc(userDocRef);
 
-    if (!userFound) {
-      // Email not found in database
-      localStorage.removeItem("userEmail");
-    }
-  }
+          if (userDocSnap.exists()) {
+            const userData = userDocSnap.data();
+            document.getElementById("nav-login").style.display = "none";
+            document.getElementById("nav-user").style.display = "block";
+            document.getElementById("user-name").textContent = userData.username || userEmail;
+          } else {
+            // User doc not found in DB - treat as logged out
+            localStorage.removeItem("loggedInUserEmail");
+          }
+        } else {
+          document.getElementById("nav-login").style.display = "block";
+          document.getElementById("nav-user").style.display = "none";
+        }
+      };
 
-  // Logout function
-  window.logoutUser = function () {
-    localStorage.removeItem("userEmail");
-    window.location.href = "login.html";
-  };
-</script>
-    </head>
+      window.logoutUser = function () {
+        localStorage.removeItem("loggedInUserEmail");
+        location.reload();
+      };
+
+      window.addEventListener('DOMContentLoaded', checkLogin);
+    </script>
+</head>
 
 <body>
     <!-- Spinner Start -->
@@ -95,7 +100,7 @@
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <p class="m-0 fw-bold" style="font-size: 25px;"><img src="img/icon.png" alt="" height="50px">SQL<span
-                    style="color: #fb873f;">GeniusHub</span></p>
+                    style="color: #fb873f;">Geniushub</span></p>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
             style="border: none;">
@@ -161,11 +166,11 @@
 
                 <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.3s">
                     <h6 class="section-title bg-white text-start pe-3">About Us</h6>
-                    <h1 class="mb-4" style="color: #fb873f;">Welcome to SQLGeniusHub</h1>
+                    <h1 class="mb-4" style="color: #fb873f;">Welcome to SQLGeniushub</h1>
                     <p class="mb-4">
-                      At SQLGeniusHub, we aim to simplify database learning by offering easy-to-understand, practical SQL lessons. Whether you're a beginner or brushing up your skills, our platform adapts to your pace and helps you build strong query-writing confidence.
+                      At SQLGeniushub, we aim to simplify database learning by offering easy-to-understand, practical SQL lessons. Whether you're a beginner or brushing up your skills, our platform adapts to your pace and helps you build strong query-writing confidence.
                     </p>
-                    <p class="mb-4">Welcome to SQLGeniusHub, where learning knows no boundaries. Our mission
+                    <p class="mb-4">Welcome to SQLGeniushub, where learning knows no boundaries. Our mission
                         is to empower individuals worldwide through accessible and innovative education. Here's what
                         sets us apart:</p>
 
@@ -177,7 +182,7 @@
 
                     <h3 class="mb-4">Empowering Learners</h3>
 
-                    <p class="mb-4"> SQLGeniusHub empowers learners to unlock career opportunities in data analytics, backend development, and database management. Our hands-on exercises and real-time practice help users grow with confidence and clarity.</p>
+                    <p class="mb-4"> SQLGeniushub empowers learners to unlock career opportunities in data analytics, backend development, and database management. Our hands-on exercises and real-time practice help users grow with confidence and clarity.</p>
 
                     <h3 class="mb-4">Innovation in Learning</h3>
 
@@ -185,7 +190,7 @@
 
                     <h3 class="mb-4">Community-Centric Approach</h3>
 
-                    <p class="mb-4"> At SQLGeniusHub, you're part of a growing community of learners, mentors, and SQL enthusiasts. Our forum and discussion groups help you collaborate, share doubts, and grow together as you learn.</p>
+                    <p class="mb-4"> At SQLGeniushub, you're part of a growing community of learners, mentors, and SQL enthusiasts. Our forum and discussion groups help you collaborate, share doubts, and grow together as you learn.</p>
 
                     <h3 class="mb-4">Diverse and Inclusive Education</h3>
 
@@ -197,7 +202,7 @@
 
                     <p class="mb-4"> We listen to your feedback to keep improving. Our team is dedicated to refining course content and platform features, ensuring a smooth, effective, and up-to-date learning journey for everyone.</p>
 
-                    <p class=" mt-5 mb-4"> Thank you for being a part of SQLGeniusHub. Let's continue to learn, grow, and master SQL together — one query at a time.
+                    <p class=" mt-5 mb-4"> Thank you for being a part of SQLGeniushub. Let's continue to learn, grow, and master SQL together — one query at a time.
 
 </p>
 
@@ -225,7 +230,7 @@
                     <h4 class="text-white mb-3">Contact</h4>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, Tirupati, AndhraPradesh</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91 1234567890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>SQLGeniusHub@gmail.com</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>SQLGeniushub@gmail.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
@@ -243,7 +248,7 @@
                                 placeholder="Your email" required>
                             <button type="submit"
                                 class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2"><a
-                                    href="mailto:SQLGeniusHub@gmail.com">Subscribe</a></button>
+                                    href="mailto:SQLGeniushub@gmail.com">Subscribe</a></button>
                         </form>
                     </div>
                 </div>
@@ -253,7 +258,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="index.html">SQLGeniusHub</a>, All Right Reserved.
+                        &copy; <a class="border-bottom" href="index.html">SQLGeniushub</a>, All Right Reserved.
 
                     </div>
                 </div>
